@@ -31,8 +31,25 @@ def get_book(name: str):
     return my_book_items[name]
   except:
     raise HTTPException(status_code=404, detail="Item not found")
-    
-  
+
+  pass
+
+@app.delete("/books/{name}")
+def delete_book(name: str):
+  print("firing", my_book_items.keys())
+  if name in my_book_items.keys():
+    deleted_book = my_book_items.pop(name)
+    return {"succesfully deleted:": deleted_book}
+    pass
+  else:
+    raise HTTPException(status_code=404, detail="Item not found")
+
+@app.get("/books")
+def get_book():
+  try:
+    return my_book_items
+  except:
+    raise HTTPException(status_code=404, detail="Item not found")
   pass
 
 
