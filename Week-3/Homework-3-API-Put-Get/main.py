@@ -1,6 +1,6 @@
 from pydantic import ValidationError
 from bookStuff import Author,BookItem, BookStore
-from typing import Union, Dict
+from typing import List, Union, Dict
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 app = FastAPI()
@@ -36,7 +36,7 @@ def get_book(name: str):
 
 @app.delete("/books/{name}")
 def delete_book(name: str):
-  print("firing", my_book_items.keys())
+  
   if name in my_book_items.keys():
     deleted_book = my_book_items.pop(name)
     return {"succesfully deleted:": deleted_book}
@@ -44,10 +44,11 @@ def delete_book(name: str):
   else:
     raise HTTPException(status_code=404, detail="Item not found")
 
-@app.get("/books")
-def get_book():
+@app.get("/books/")
+def get_all_book() -> List[BookItem]:
+
   try:
-    return my_book_items
+    return my_book_items.values()
   except:
     raise HTTPException(status_code=404, detail="Item not found")
   pass
