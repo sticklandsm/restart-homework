@@ -36,13 +36,14 @@ def test_put_params(payload, http_codes, client, request ):
   
 @pytest.mark.parametrize("file_path, http_codes", 
                          [
-                           ("unit_test",200),
-                           ("unit_test1",404)
+                           ("good_path",200),
+                           ("bad_path",404)
                          ],)
 def test_get_params(file_path, http_codes, client, good_payload):
-  put_response = client.put("/books/unit_test", json=good_payload)
+  put_response = client.put("/books/good_path", json=good_payload)
   assert put_response.status_code == 200
   get_response = client.get("/books/"+ file_path)
   assert get_response.status_code == http_codes
-  assert good_payload == json.loads(get_response._content)
+  if http_codes == 200:
+    assert good_payload == json.loads(get_response._content)
   pass
